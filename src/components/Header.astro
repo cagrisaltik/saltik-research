@@ -1,0 +1,152 @@
+
+---
+const navigation = [
+  { href: "/research/", label: "Research" },
+  { href: "/ctf/", label: "CTF Write-ups" },
+  { href: "/guides/", label: "Technical Guides" },
+  { href: "/about/", label: "About" },
+];
+---
+
+<header class="relative z-50 border-b border-white/10 bg-[#080b12]/90 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4 sm:py-5">
+    <a href="/" class="group flex min-w-0 items-center gap-3">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-blue-400/30 bg-blue-500/10 font-mono text-sm font-bold text-blue-400 transition group-hover:border-blue-400/60">
+        SR
+      </span>
+
+      <span class="min-w-0">
+        <span class="block font-semibold tracking-wide text-white">
+          Saltik Research
+        </span>
+        <span class="block text-xs text-slate-500">
+          Independent Security Research
+        </span>
+      </span>
+    </a>
+
+    <nav
+      aria-label="Main navigation"
+      class="hidden items-center gap-6 text-sm text-slate-400 lg:flex"
+    >
+      {navigation.map((item) => (
+        <a
+          href={item.href}
+          class="transition hover:text-blue-400"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex shrink-0 items-center gap-3">
+      <a
+        href="https://github.com/cagrisaltik"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden rounded-lg border border-white/10 px-4 py-2 text-sm text-slate-300 transition hover:border-blue-400/50 hover:text-white sm:inline-flex"
+      >
+        GitHub ↗
+      </a>
+
+      <button
+        id="mobile-menu-toggle"
+        type="button"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-navigation"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-300 transition hover:border-blue-400/40 hover:text-white lg:hidden"
+      >
+        <svg
+          id="menu-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          width="21"
+          height="21"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-navigation"
+    class="hidden border-t border-white/[0.08] bg-[#080b12]/95 px-6 py-4 lg:hidden"
+  >
+    <nav aria-label="Mobile navigation" class="mx-auto flex max-w-6xl flex-col gap-1">
+      {navigation.map((item) => (
+        <a
+          href={item.href}
+          class="rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-white/[0.04] hover:text-blue-300"
+        >
+          {item.label}
+        </a>
+      ))}
+
+      <a
+        href="https://github.com/cagrisaltik"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-2 rounded-lg border border-white/10 px-4 py-3 text-sm text-slate-300 transition hover:border-blue-400/40 hover:text-white"
+      >
+        GitHub ↗
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(
+    "#mobile-menu-toggle",
+  );
+  const menu = document.querySelector<HTMLDivElement>(
+    "#mobile-navigation",
+  );
+  const icon = document.querySelector<SVGSVGElement>("#menu-icon");
+
+  if (toggle && menu && icon) {
+    const closeMenu = () => {
+      menu.classList.add("hidden");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-label", "Open navigation menu");
+
+      icon.innerHTML = `
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      `;
+    };
+
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+
+      if (isOpen) {
+        closeMenu();
+        return;
+      }
+
+      menu.classList.remove("hidden");
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.setAttribute("aria-label", "Close navigation menu");
+
+      icon.innerHTML = `
+        <path d="M18 6 6 18M6 6l12 12" />
+      `;
+    });
+
+    menu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1024) {
+        closeMenu();
+      }
+    });
+  }
+</script>

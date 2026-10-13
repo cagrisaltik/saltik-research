@@ -1,0 +1,106 @@
+
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const entries = (await getCollection("research", ({ data }) => {
+  return data.draft !== true && data.category.toLowerCase() === "ctf";
+})).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
+---
+
+<BaseLayout
+  title="CTF Write-ups — Saltik Research"
+  description="Capture the Flag challenge walkthroughs, methodologies and technical lessons from security labs."
+>
+  <section class="mx-auto max-w-6xl px-6 pb-24 pt-16 sm:pt-24">
+    <a
+      href="/"
+      class="text-sm text-slate-400 transition hover:text-blue-300"
+    >
+      ← Home
+    </a>
+
+    <header class="mt-12 max-w-3xl">
+      <p class="eyebrow">Practice & Methodology</p>
+
+      <h1 class="hero-title mt-6 text-4xl font-semibold leading-tight text-white sm:text-6xl">
+        CTF <span class="hero-gradient">Write-ups.</span>
+      </h1>
+
+      <p class="mt-6 text-base leading-8 text-slate-400 sm:text-lg">
+        Documented challenge walkthroughs, investigation techniques and
+        practical lessons from cybersecurity labs.
+      </p>
+
+      <div class="mt-8 flex flex-wrap gap-3 text-xs text-slate-500">
+        <span class="rounded-md border border-white/10 px-3 py-2">
+          Methodology
+        </span>
+        <span class="rounded-md border border-white/10 px-3 py-2">
+          Enumeration
+        </span>
+        <span class="rounded-md border border-white/10 px-3 py-2">
+          Analysis
+        </span>
+      </div>
+    </header>
+
+   <div class="mt-20 border-t border-white/[0.08] pt-10 sm:mt-24 sm:pt-12">
+
+
+      {entries.length > 0 ? (
+        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {entries.map((entry) => (
+            <a
+              href={`/research/${entry.id.replace(/\.md$/, "")}/`}
+              class="glass-card group flex h-full flex-col p-6"
+            >
+              <div class="flex items-center justify-between gap-3">
+                <span class="card-index">CTF / WRITE-UP</span>
+                <span class="card-arrow text-slate-500">↗</span>
+              </div>
+
+              <time
+                datetime={entry.data.pubDate.toISOString()}
+                class="mt-6 text-xs text-slate-500"
+              >
+                {formatDate(entry.data.pubDate)}
+              </time>
+
+              <h3 class="mt-3 text-lg font-semibold leading-7 text-white transition group-hover:text-blue-200">
+                {entry.data.title}
+              </h3>
+
+              <p class="mt-3 flex-1 text-sm leading-7 text-slate-400">
+                {entry.data.description}
+              </p>
+
+              <span class="mt-6 text-xs text-blue-300">
+                Read write-up →
+              </span>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="glass-card p-8 sm:p-10">
+          <p class="font-mono text-xs text-blue-300">NO ENTRIES YET</p>
+          <h3 class="mt-4 text-xl font-semibold text-white">
+            The lab notebook is waiting.
+          </h3>
+          <p class="mt-3 max-w-xl text-sm leading-7 text-slate-400">
+            CTF walkthroughs will appear here as challenges are completed
+            and documented. Each write-up will focus on the investigation
+            process, technical evidence and lessons learned.
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

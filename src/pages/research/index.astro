@@ -1,0 +1,254 @@
+
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const entries = (await getCollection("research", ({ data }) => {
+  return data.draft !== true;
+})).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const categories = [...new Set(entries.map((entry) => entry.data.category))]
+  .sort((a, b) => a.localeCompare(b));
+
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+---
+
+<BaseLayout
+  title="Research — Saltik Research"
+  description="Security research, technical investigations and documented findings."
+>
+  <section class="mx-auto max-w-6xl px-6 pb-24 pt-20 sm:pt-28">
+    <p class="eyebrow">Research Library</p>
+
+    <div class="mt-6 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+      <div>
+        <h1 class="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+          Research <span class="text-slate-500">& Findings.</span>
+        </h1>
+        <p class="mt-5 max-w-2xl leading-7 text-slate-400">
+          Technical investigations, security analysis and practical knowledge
+          documented along the way.
+        </p>
+      </div>
+
+      <span class="font-mono text-xs text-slate-500">
+        <span id="result-count">{entries.length.toString().padStart(2, "0")}</span>
+        ARTICLES
+      </span>
+    </div>
+
+    <div class="mt-10 rounded-xl border border-white/10 bg-white/[0.02] p-4 sm:p-5">
+      <label for="research-search" class="mb-3 block text-xs font-medium text-slate-400">
+        SEARCH THE ARCHIVE
+      </label>
+
+      <div class="flex items-center gap-3 rounded-lg border border-white/10 bg-black/20 px-4 transition focus-within:border-blue-400/50">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          class="h-5 w-5 shrink-0 text-slate-500"
+        >
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m16 16 4 4"></path>
+        </svg>
+
+        <input
+          id="research-search"
+          type="search"
+          placeholder="Search articles, tags, categories..."
+          autocomplete="off"
+          class="w-full bg-transparent py-4 text-sm text-white outline-none placeholder:text-slate-600"
+        />
+
+        <kbd class="hidden rounded border border-white/10 px-2 py-1 font-mono text-[10px] text-slate-500 sm:block">
+          SEARCH
+        </kbd>
+      </div>
+
+      <div class="mt-5 flex flex-wrap items-center gap-2">
+        <span class="mr-1 text-xs text-slate-500">CATEGORY</span>
+
+        <button
+          type="button"
+          data-category="all"
+          aria-pressed="true"
+          class="category-button rounded-lg border border-blue-400/30 bg-blue-500/10 px-3 py-2 text-xs text-blue-200 transition hover:border-blue-400/50"
+        >
+          All research
+        </button>
+
+        {categories.map((category) => (
+          <button
+            type="button"
+            data-category={category}
+            aria-pressed="false"
+            class="category-button rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-400 transition hover:border-white/25 hover:text-white"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <div class="mb-5 mt-10 flex items-center justify-between">
+      <h2 class="text-sm font-medium text-slate-300">Published research</h2>
+      <span class="font-mono text-xs text-slate-600">LATEST FIRST</span>
+    </div>
+
+    <div id="research-grid" class="grid gap-4 md:grid-cols-2">
+      {entries.map((entry, index) => {
+        const searchableText = [
+          entry.data.title,
+          entry.data.description,
+          entry.data.category,
+          ...entry.data.tags,
+        ].join(" ").toLowerCase();
+
+        return (
+          <a
+            href={`/research/${entry.id.replace(/\.md$/, "")}/`}
+            data-article-card
+            data-category={entry.data.category}
+            data-search={searchableText}
+            class="glass-card group flex flex-col p-6 sm:p-7"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <span class="card-index">
+                {String(index + 1).padStart(2, "0")} / {entry.data.category.toUpperCase()}
+              </span>
+              <span class="card-arrow text-slate-500">↗</span>
+            </div>
+
+            <h3 class="mt-7 text-xl font-semibold text-white transition group-hover:text-blue-200">
+              {entry.data.title}
+            </h3>
+
+            <p class="mt-3 flex-1 text-sm leading-7 text-slate-400">
+              {entry.data.description}
+            </p>
+
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-4">
+              <time
+                class="text-xs text-slate-500"
+                datetime={entry.data.pubDate.toISOString()}
+              >
+                {dateFormatter.format(entry.data.pubDate)}
+              </time>
+
+              <div class="flex flex-wrap gap-2">
+                {entry.data.tags.slice(0, 3).map((tag) => (
+                  <span class="font-mono text-[10px] text-slate-500">#{tag}</span>
+                ))}
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <div id="empty-state" hidden class="mt-6 rounded-xl border border-white/10 bg-white/[0.02] px-6 py-12 text-center">
+      <p class="text-lg font-medium text-white">No matching research found.</p>
+      <p class="mt-2 text-sm text-slate-500">
+        Try another search term or select a different category.
+      </p>
+      <button
+        id="clear-filters"
+        type="button"
+        class="mt-5 rounded-lg border border-white/10 px-4 py-2 text-sm text-blue-300 transition hover:border-blue-400/40"
+      >
+        Clear filters
+      </button>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const searchInput = document.querySelector<HTMLInputElement>("#research-search");
+  const cards = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-article-card]")
+  );
+  const categoryButtons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>(".category-button")
+  );
+  const resultCount = document.querySelector<HTMLElement>("#result-count");
+  const emptyState = document.querySelector<HTMLElement>("#empty-state");
+  const clearButton = document.querySelector<HTMLButtonElement>("#clear-filters");
+
+  let activeCategory = "all";
+
+  function applyFilters() {
+    const query = searchInput?.value.trim().toLowerCase() ?? "";
+    let visibleCount = 0;
+
+    for (const card of cards) {
+      const text = card.dataset.search ?? "";
+      const category = card.dataset.category ?? "";
+
+      const matchesSearch = text.includes(query);
+      const matchesCategory =
+        activeCategory === "all" || category === activeCategory;
+      const visible = matchesSearch && matchesCategory;
+
+      card.hidden = !visible;
+
+      if (visible) visibleCount++;
+    }
+
+    if (resultCount) {
+      resultCount.textContent = String(visibleCount).padStart(2, "0");
+    }
+
+    if (emptyState) {
+      emptyState.hidden = visibleCount !== 0;
+    }
+  }
+
+  function selectCategory(button: HTMLButtonElement) {
+    activeCategory = button.dataset.category ?? "all";
+
+    for (const item of categoryButtons) {
+      const selected = item === button;
+      item.setAttribute("aria-pressed", String(selected));
+      item.classList.toggle("border-blue-400/30", selected);
+      item.classList.toggle("bg-blue-500/10", selected);
+      item.classList.toggle("text-blue-200", selected);
+      item.classList.toggle("border-white/10", !selected);
+      item.classList.toggle("text-slate-400", !selected);
+    }
+
+    applyFilters();
+  }
+
+  searchInput?.addEventListener("input", applyFilters);
+
+  for (const button of categoryButtons) {
+    button.addEventListener("click", () => selectCategory(button));
+  }
+
+  clearButton?.addEventListener("click", () => {
+    if (searchInput) searchInput.value = "";
+
+    const allButton = categoryButtons.find(
+      (button) => button.dataset.category === "all"
+    );
+
+    if (allButton) selectCategory(allButton);
+    else applyFilters();
+
+    searchInput?.focus();
+  });
+</script>
+
+<style>
+  [data-article-card][hidden],
+  #empty-state[hidden] {
+    display: none !important;
+  }
+</style>

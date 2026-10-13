@@ -1,11 +1,265 @@
----
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const articles = (await getCollection("research", ({ data }) => {
+  return data.draft !== true;
+})).sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+
+const latestArticles = articles.slice(0, 3);
+
+const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(date);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+  title="Saltik Research — Independent Security Research"
+  description="Independent security research, CTF write-ups and technical guides. Explore findings, methodologies and practical security knowledge."
+>
+  <div class="site-grid pointer-events-none absolute inset-x-0 top-0 -z-10 h-[680px]"></div>
+
+  <section class="mx-auto max-w-6xl px-6 pb-20 pt-24 sm:pb-28 sm:pt-36">
+    <div class="eyebrow mb-8">
+      Independent Security Research
+    </div>
+
+    <div class="grid items-center gap-14 lg:grid-cols-[1.4fr_0.6fr]">
+      <div>
+        <h1 class="hero-title max-w-4xl text-5xl font-semibold leading-[1.08] text-white sm:text-6xl lg:text-7xl">
+          Explore systems.
+          <span class="hero-gradient block">Understand threats.</span>
+          <span class="mt-2 block text-slate-500">Build knowledge.</span>
+        </h1>
+
+        <p class="mt-8 max-w-xl text-base leading-8 text-slate-400 sm:text-lg">
+          Independent security research, CTF write-ups and technical guides.
+          Documenting investigations, discoveries and practical lessons
+          about how systems work.
+        </p>
+
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a
+            href="/research/"
+            class="group inline-flex items-center gap-3 rounded-lg border border-blue-400/30 bg-blue-500/10 px-5 py-3 text-sm font-medium text-blue-200 transition hover:border-blue-300/60 hover:bg-blue-500/20"
+          >
+            Explore Research
+            <span class="transition-transform group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href="/ctf/"
+            class="rounded-lg border border-white/10 px-5 py-3 text-sm text-slate-300 transition hover:border-white/25 hover:text-white"
+          >
+            CTF Write-ups ↗
+          </a>
+        </div>
+
+        <div class="mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-6 text-xs text-slate-500">
+          <span>Security Analysis</span>
+          <span>CTF Research</span>
+          <span>Technical Guides</span>
+        </div>
+      </div>
+
+      <div class="relative mx-auto w-full max-w-sm">
+        <div class="absolute -inset-8 rounded-full bg-blue-500/[0.07] blur-3xl"></div>
+
+        <div class="glass-card relative p-6 sm:p-7">
+          <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <span class="font-mono text-xs text-slate-400">RESEARCH.LOG</span>
+            <span class="flex items-center gap-2 font-mono text-[10px] text-emerald-400">
+              <span class="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+              SYSTEM READY
+            </span>
+          </div>
+
+          <div class="space-y-5 py-7 font-mono text-xs leading-6">
+            <p class="text-slate-500">$ initialize_research()</p>
+            <p class="text-blue-300">[+] Research environment prepared</p>
+            <p class="text-blue-300">[+] Analysis methodology loaded</p>
+            <p class="text-blue-300">[+] Documentation enabled</p>
+            <p class="text-slate-500">$ status --verbose</p>
+            <div class="mt-5 rounded-lg border border-white/10 bg-black/20 p-4">
+              <p class="text-slate-500">mission</p>
+              <p class="mt-1 text-white">Explore. Analyze. Document.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between border-t border-white/10 pt-4 text-xs">
+            <span class="text-slate-500">SALTIK RESEARCH</span>
+            <span class="font-mono text-blue-400">SR_001</span>
+          </div>
+        </div>
+
+        <div class="pointer-events-none absolute -bottom-5 -right-3 rounded-lg border border-blue-400/20 bg-[#0b1220]/90 px-4 py-3 font-mono text-[10px] text-blue-300 shadow-xl sm:-right-6">
+          INDEPENDENT / TECHNICAL
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">Areas of Focus</p>
+        <h2 class="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          Investigate. Practice. Understand.
+        </h2>
+      </div>
+      <span class="font-mono text-xs text-slate-500">01 — 03</span>
+    </div>
+
+    <div class="grid gap-4 md:grid-cols-3">
+      <a href="/research/" class="glass-card group p-6 sm:p-7">
+        <div class="flex items-center justify-between">
+          <span class="card-index">01 / ANALYSIS</span>
+          <span class="card-arrow text-lg text-slate-500">↗</span>
+        </div>
+        <div class="mt-9 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10 font-mono text-lg text-blue-300">
+          ⌘
+        </div>
+        <h3 class="mt-6 text-lg font-medium text-white">Security Research</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-400">
+          Security investigations, technical analysis and documented findings.
+        </p>
+        <p class="mt-6 text-xs text-slate-500 transition group-hover:text-blue-300">
+          Explore research →
+        </p>
+      </a>
+
+      <a href="/ctf/" class="glass-card group p-6 sm:p-7">
+        <div class="flex items-center justify-between">
+          <span class="card-index">02 / PRACTICE</span>
+          <span class="card-arrow text-lg text-slate-500">↗</span>
+        </div>
+        <div class="mt-9 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10 font-mono text-lg text-blue-300">
+          &gt;_
+        </div>
+        <h3 class="mt-6 text-lg font-medium text-white">CTF Write-ups</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-400">
+          Challenge walkthroughs, investigation steps and lessons learned.
+        </p>
+        <p class="mt-6 text-xs text-slate-500 transition group-hover:text-blue-300">
+          Explore write-ups →
+        </p>
+      </a>
+
+      <a href="/guides/" class="glass-card group p-6 sm:p-7">
+        <div class="flex items-center justify-between">
+          <span class="card-index">03 / KNOWLEDGE</span>
+          <span class="card-arrow text-lg text-slate-500">↗</span>
+        </div>
+        <div class="mt-9 flex h-11 w-11 items-center justify-center rounded-xl border border-blue-400/20 bg-blue-500/10 font-mono text-lg text-blue-300">
+          ?
+        </div>
+        <h3 class="mt-6 text-lg font-medium text-white">Technical Guides</h3>
+        <p class="mt-3 text-sm leading-7 text-slate-400">
+          Practical guides covering security tools, systems, networks and analysis.
+        </p>
+        <p class="mt-6 text-xs text-slate-500 transition group-hover:text-blue-300">
+          Browse guides →
+        </p>
+      </a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="eyebrow">From the Lab</p>
+        <h2 class="mt-4 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          Latest Research
+        </h2>
+        <p class="mt-3 max-w-xl text-sm leading-7 text-slate-400">
+          Recent articles, technical findings and documented investigations.
+        </p>
+      </div>
+
+      <a
+        href="/research/"
+        class="text-sm text-blue-300 transition hover:text-blue-200"
+      >
+        All research →
+      </a>
+    </div>
+
+    {latestArticles.length > 0 ? (
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {latestArticles.map((entry, index) => (
+          <a
+            href={`/research/${entry.id.replace(/\.md$/, "")}/`}
+            class="glass-card group flex h-full flex-col p-6"
+          >
+            <div class="flex items-center justify-between gap-3">
+              <span class="card-index">
+                {String(index + 1).padStart(2, "0")} / {entry.data.category.toUpperCase()}
+              </span>
+              <span class="card-arrow text-slate-500">↗</span>
+            </div>
+
+            <time
+              datetime={entry.data.pubDate.toISOString()}
+              class="mt-6 text-xs text-slate-500"
+            >
+              {formatDate(entry.data.pubDate)}
+            </time>
+
+            <h3 class="mt-3 text-lg font-semibold leading-7 text-white transition group-hover:text-blue-200">
+              {entry.data.title}
+            </h3>
+
+            <p class="mt-3 flex-1 text-sm leading-7 text-slate-400">
+              {entry.data.description}
+            </p>
+
+            {entry.data.tags.length > 0 && (
+              <div class="mt-5 flex flex-wrap gap-2">
+                {entry.data.tags.slice(0, 3).map((tag) => (
+                  <span class="rounded-md border border-white/10 bg-white/[0.03] px-2 py-1 font-mono text-[10px] text-slate-500">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <span class="mt-6 text-xs text-blue-300 transition group-hover:text-blue-200">
+              Read article →
+            </span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="glass-card p-8 text-center">
+        <p class="text-sm text-slate-400">
+          Research articles are coming soon. Check back for new findings.
+        </p>
+      </div>
+    )}
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 pb-24">
+    <div class="glass-card flex flex-col gap-6 p-7 sm:flex-row sm:items-center sm:justify-between sm:p-10">
+      <div>
+        <p class="eyebrow">The Approach</p>
+        <h2 class="mt-4 text-2xl font-semibold text-white">
+          Understand how systems work.
+        </h2>
+        <p class="mt-3 max-w-2xl text-sm leading-7 text-slate-400">
+          Explore the details, test assumptions and turn technical findings
+          into clear, reproducible documentation.
+        </p>
+      </div>
+      <a
+        href="/about/"
+        class="inline-flex shrink-0 items-center gap-2 text-sm text-blue-300 transition hover:text-blue-200"
+      >
+        About this research <span>→</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

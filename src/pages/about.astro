@@ -1,0 +1,161 @@
+
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="About — Saltik Research"
+  description="Learn about Saltik Research, its approach to independent security research, technical analysis and documentation."
+>
+  <section class="mx-auto max-w-6xl px-6 pb-24 pt-16 sm:pt-24">
+    <a
+      href="/"
+      class="text-sm text-slate-400 transition hover:text-blue-300"
+    >
+      ← Home
+    </a>
+
+    <header class="mt-12 max-w-4xl">
+      <p class="eyebrow">About This Research Space</p>
+
+      <h1 class="hero-title mt-6 text-4xl font-semibold leading-tight text-white sm:text-6xl">
+        Curiosity into <span class="hero-gradient">knowledge.</span>
+      </h1>
+
+      <p class="mt-6 max-w-3xl text-base leading-8 text-slate-400 sm:text-lg">
+        Saltik Research is an independent space for cybersecurity research,
+        technical exploration and documented learning.
+        The goal is to turn complex technical topics into clear,
+        reproducible and useful knowledge.
+      </p>
+    </header>
+
+    <div class="mt-16 grid gap-5 lg:mt-20 lg:grid-cols-[1.15fr_0.85fr]">
+      <article class="glass-card p-7 sm:p-9">
+        <p class="card-index">01 / PURPOSE</p>
+
+        <h2 class="mt-6 text-2xl font-semibold text-white">
+          Research with intention.
+        </h2>
+
+        <div class="mt-5 space-y-4 text-sm leading-8 text-slate-400 sm:text-base">
+          <p>
+            Security is more than identifying vulnerabilities.
+            It requires understanding systems, examining evidence,
+            questioning assumptions and communicating findings clearly.
+          </p>
+
+          <p>
+            This space documents that process through technical articles,
+            CTF write-ups, practical guides and security experiments.
+            Each publication aims to explain not only what works,
+            but also why it works and what can be learned from it.
+          </p>
+        </div>
+      </article>
+
+      <article class="glass-card p-7 sm:p-9">
+        <p class="card-index">02 / PRINCIPLES</p>
+
+        <h2 class="mt-6 text-2xl font-semibold text-white">
+          How I approach learning.
+        </h2>
+
+        <div class="mt-7 space-y-6">
+          <div class="flex gap-4">
+            <span class="font-mono text-sm text-blue-300">01</span>
+            <div>
+              <h3 class="font-medium text-white">Investigate</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Examine the details, gather evidence and understand the context.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="font-mono text-sm text-blue-300">02</span>
+            <div>
+              <h3 class="font-medium text-white">Validate</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Test assumptions and verify findings in controlled environments.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="font-mono text-sm text-blue-300">03</span>
+            <div>
+              <h3 class="font-medium text-white">Document</h3>
+              <p class="mt-1 text-sm leading-6 text-slate-400">
+                Share the process, limitations and lessons learned clearly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <section class="mt-6 glass-card p-7 sm:p-9">
+      <p class="card-index">03 / AREAS OF INTEREST</p>
+
+      <h2 class="mt-5 text-2xl font-semibold text-white">
+        Exploring the technical details.
+      </h2>
+
+      <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
+        The research scope includes defensive security, digital forensics,
+        system and network security, security tooling, CTF challenges
+        and practical infrastructure analysis.
+      </p>
+
+      <div class="mt-7 flex flex-wrap gap-3">
+        {[
+          "Cybersecurity",
+          "Digital Forensics",
+          "Network Security",
+          "Security Tooling",
+          "CTF Research",
+          "Infrastructure",
+        ].map((item) => (
+          <span class="rounded-lg border border-white/10 bg-white/[0.02] px-3 py-2 text-sm text-slate-300">
+            {item}
+          </span>
+        ))}
+      </div>
+    </section>
+
+    <section class="mt-6 flex flex-col gap-6 rounded-2xl border border-blue-400/15 bg-blue-500/[0.04] p-7 sm:flex-row sm:items-center sm:justify-between sm:p-9">
+      <div>
+        <p class="font-mono text-xs tracking-wider text-blue-300">
+          EXPLORE. ANALYZE. DOCUMENT.
+        </p>
+
+        <h2 class="mt-3 text-xl font-semibold text-white sm:text-2xl">
+          Follow the research.
+        </h2>
+
+        <p class="mt-2 text-sm leading-7 text-slate-400">
+          Explore published articles and follow ongoing technical work.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <a
+          href="/research/"
+          class="rounded-lg border border-white/10 px-4 py-3 text-sm text-slate-200 transition hover:border-blue-400/40 hover:text-white"
+        >
+          Browse research
+        </a>
+
+        <a
+          href="https://github.com/cagrisaltik"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-lg bg-blue-500 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-400"
+        >
+          GitHub ↗
+        </a>
+      </div>
+    </section>
+  </section>
+</BaseLayout>
